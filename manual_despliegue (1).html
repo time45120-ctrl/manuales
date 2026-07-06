@@ -1,0 +1,896 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual de despliegue - SPA</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 300px;
+      height: 100vh;
+      background-color: #1f2937;
+      color: #ffffff;
+      padding: 25px 20px;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #4b5563;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #d1d5db;
+      text-decoration: none;
+      padding: 10px 8px;
+      font-size: 14px;
+      border-radius: 6px;
+      margin-bottom: 4px;
+      cursor: pointer;
+    }
+
+    .sidebar a:hover {
+      color: #ffffff;
+      background-color: #374151;
+      transition: 0.2s;
+    }
+
+    .sidebar a.active {
+      color: #ffffff;
+      background-color: #2563eb;
+      font-weight: bold;
+    }
+
+    .content {
+      margin-left: 300px;
+      padding: 40px;
+      max-width: 1100px;
+    }
+
+    .manual-container {
+      background-color: #ffffff;
+      padding: 35px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      min-height: 550px;
+    }
+
+    .manual-container section {
+      display: none;
+    }
+
+    .manual-container section.active-section {
+      display: block;
+      animation: fadeIn 0.25s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #111827;
+    }
+
+    h2 {
+      font-size: 25px;
+      margin-bottom: 15px;
+      color: #1f2937;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 8px;
+    }
+
+    h3 {
+      font-size: 20px;
+      margin-top: 28px;
+      margin-bottom: 12px;
+      color: #374151;
+    }
+
+    p {
+      margin-bottom: 15px;
+    }
+
+    ul,
+    ol {
+      margin-left: 25px;
+      margin-bottom: 20px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    code {
+      background-color: #e5e7eb;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+      font-size: 14px;
+    }
+
+    pre {
+      background-color: #111827;
+      color: #f9fafb;
+      padding: 18px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      border: 1px solid #d1d5db;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background-color: #f3f4f6;
+      color: #111827;
+    }
+
+    .note {
+      background-color: #eff6ff;
+      border-left: 5px solid #2563eb;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+
+    .warning {
+      background-color: #fff7ed;
+      border-left: 5px solid #f97316;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+
+    .success {
+      background-color: #ecfdf5;
+      border-left: 5px solid #10b981;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+
+    .section-label {
+      display: inline-block;
+      background-color: #e0ecff;
+      color: #1d4ed8;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+
+      .content {
+        margin-left: 0;
+        padding: 20px;
+      }
+
+      .manual-container {
+        padding: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <aside class="sidebar">
+    <h2>Manual de despliegue</h2>
+
+    <a class="menu-link active" data-section="introduccion">1. Introducción</a>
+    <a class="menu-link" data-section="vision">2. Visión general</a>
+    <a class="menu-link" data-section="frontend">3. Despliegue del frontend</a>
+    <a class="menu-link" data-section="backend">4. Despliegue del backend</a>
+    <a class="menu-link" data-section="supabase">5. Despliegue de Supabase</a>
+    <a class="menu-link" data-section="ia">6. Servicios de IA</a>
+    <a class="menu-link" data-section="esp32">7. Despliegue para ESP32</a>
+    <a class="menu-link" data-section="validacion">8. Validación post-despliegue</a>
+    <a class="menu-link" data-section="validacion-frontend">8.1 Validación del frontend</a>
+    <a class="menu-link" data-section="validacion-backend">8.2 Validación del backend</a>
+    <a class="menu-link" data-section="validacion-voz">8.3 Validación del flujo de voz</a>
+    <a class="menu-link" data-section="validacion-esp32">8.4 Validación con ESP32</a>
+    <a class="menu-link" data-section="riesgos">9. Riesgos y controles</a>
+    <a class="menu-link" data-section="historial">10. Historial de despliegue</a>
+    <a class="menu-link" data-section="conclusion">11. Conclusión</a>
+  </aside>
+
+  <main class="content">
+    <div class="manual-container">
+
+      <section id="introduccion" class="active-section">
+        <span class="section-label">Sección 1</span>
+
+        <h1>Manual de despliegue</h1>
+
+        <h2>1. Introducción</h2>
+
+        <p>
+          El despliegue del proyecto <strong>“La IA como cerebro, orquestador y controlador
+          de los dispositivos IoT”</strong> representa el paso desde un entorno de desarrollo
+          local hacia una infraestructura de producción temprana.
+        </p>
+
+        <p>
+          En esta etapa, el sistema ya cuenta con componentes publicados y comunicados
+          entre sí: una aplicación web pública, una API backend accesible por Internet,
+          una base de datos en la nube, servicios de inteligencia artificial y un primer
+          dispositivo IoT físico basado en ESP32.
+        </p>
+
+        <p>
+          El objetivo del despliegue no es presentar el sistema como una plataforma final
+          totalmente madura, sino como una solución funcional en proceso de consolidación.
+          Actualmente, el proyecto permite validar el ciclo principal de operación:
+          captura de voz, transcripción, interpretación mediante IA, generación de un plan
+          de acción, confirmación por parte del usuario, encolamiento del comando,
+          consulta desde el ESP32, ejecución física y confirmación de resultado.
+        </p>
+
+        <div class="note">
+          Esta versión funciona como una SPA básica: el documento no recarga la página,
+          solo cambia la sección visible al hacer clic en el sidebar.
+        </div>
+      </section>
+
+      <section id="vision">
+        <span class="section-label">Sección 2</span>
+
+        <h2>2. Visión general del despliegue</h2>
+
+        <p>
+          La solución desplegada se organiza como una arquitectura distribuida. Cada
+          componente se aloja o ejecuta en un entorno especializado, de acuerdo con su
+          responsabilidad dentro del sistema.
+        </p>
+
+        <p>La topología general del despliegue es la siguiente:</p>
+
+        <pre><code>Usuario
+  -> Frontend público en Hostinger
+     https://afcrseguridad.com
+  -> Backend público en AWS
+     https://api.afcrseguridad.com
+  -> Servicios de inteligencia artificial OpenAI
+  -> Base de datos y almacenamiento Supabase
+     Proyecto: omkbowrspgbuwpifksfk
+  -> Dispositivo IoT ESP32
+     Polling HTTP(S) + ACK</code></pre>
+
+        <p>
+          El frontend funciona como capa de interacción con el usuario. El backend actúa
+          como núcleo lógico y orquestador. Supabase conserva la información persistente
+          y aplica reglas de seguridad. OpenAI proporciona capacidades de transcripción e
+          interpretación de lenguaje natural. El ESP32 funciona como primer dispositivo
+          físico integrado para validar la ejecución real de comandos.
+        </p>
+
+        <p>El flujo desplegado puede describirse de la siguiente manera:</p>
+
+        <ol>
+          <li>El usuario ingresa al sitio público mediante HTTPS.</li>
+          <li>La aplicación web verifica la disponibilidad del backend.</li>
+          <li>El usuario graba un comando de voz desde el navegador.</li>
+          <li>El frontend envía el audio al backend mediante la API pública HTTPS.</li>
+          <li>El backend transcribe e interpreta el comando con apoyo de OpenAI.</li>
+          <li>El backend genera una respuesta humana y un JSON técnico.</li>
+          <li>El sistema crea un plan pendiente de confirmación.</li>
+          <li>El usuario confirma la ejecución desde el dashboard.</li>
+          <li>El backend registra y encola el comando para el dispositivo.</li>
+          <li>El ESP32 consulta la API para recibir comandos pendientes.</li>
+          <li>El ESP32 ejecuta la acción física.</li>
+          <li>El ESP32 envía un ACK de confirmación al backend.</li>
+          <li>El dashboard muestra el estado final del comando.</li>
+        </ol>
+
+        <div class="success">
+          Este flujo demuestra que la inteligencia artificial no ejecuta directamente una
+          acción física sin control. La IA interpreta y propone; el backend valida y
+          organiza; el usuario confirma; el dispositivo ejecuta; y la plataforma registra
+          el resultado.
+        </div>
+      </section>
+
+      <section id="frontend">
+        <span class="section-label">Sección 3</span>
+
+        <h2>3. Despliegue del frontend</h2>
+
+        <p>
+          El frontend público del proyecto se encuentra desplegado en Hostinger bajo el
+          dominio:
+        </p>
+
+        <pre><code>https://afcrseguridad.com</code></pre>
+
+        <p>
+          Esta aplicación fue desarrollada con Next.js, React, TypeScript y Tailwind CSS.
+          Su función principal es ofrecer una interfaz web para que el usuario pueda acceder
+          al sistema, grabar comandos de voz, revisar la respuesta generada por la IA,
+          confirmar acciones y sincronizar dispositivos IoT.
+        </p>
+
+        <p>
+          En el despliegue actual, Hostinger está configurado como entorno para una
+          aplicación Next.js. La configuración correcta corresponde a un servidor Next.js
+          ejecutado sobre Node.js, no a una exportación estática pura.
+        </p>
+
+        <p>El proceso de construcción del frontend se realiza con:</p>
+
+        <pre><code>cd /home/abraham/proy_ia_security/frontend
+npm run build</code></pre>
+
+        <p>El proceso de arranque se realiza con:</p>
+
+        <pre><code>npm run start</code></pre>
+
+        <p>
+          El comando de inicio ejecuta <code>server.js</code>, archivo encargado de iniciar
+          Next.js sobre la carpeta <code>.next</code>. El servidor escucha en el puerto
+          indicado por la variable <code>PORT</code> o, si no existe, en el puerto
+          <code>3000</code>.
+        </p>
+
+        <p>La variable de entorno principal del frontend es:</p>
+
+        <pre><code>NEXT_PUBLIC_API_BASE_URL=https://api.afcrseguridad.com</code></pre>
+
+        <div class="warning">
+          En producción, esta URL debe mantenerse bajo HTTPS. Si el frontend público se
+          carga por HTTPS pero intenta consumir una API HTTP, el navegador puede bloquear
+          la solicitud por contenido mixto.
+        </div>
+
+        <p>En los logs correctos del despliegue del frontend deben observarse marcas como:</p>
+
+        <pre><code>AFCR_FRONTEND_BUILD=f.37
+AFCR_FRONTEND_MODE=next-server</code></pre>
+      </section>
+
+      <section id="backend">
+        <span class="section-label">Sección 4</span>
+
+        <h2>4. Despliegue del backend</h2>
+
+        <p>
+          El backend público del proyecto se encuentra desplegado en AWS y se expone a
+          través del dominio:
+        </p>
+
+        <pre><code>https://api.afcrseguridad.com</code></pre>
+
+        <p>La IP pública conocida del backend es:</p>
+
+        <pre><code>3.132.192.3</code></pre>
+
+        <p>El backend está desarrollado con FastAPI y su archivo principal es:</p>
+
+        <pre><code>/home/abraham/proy_ia_security/backend/app_api.py</code></pre>
+
+        <p>Su versión operativa conocida es:</p>
+
+        <pre><code>b.17</code></pre>
+
+        <p>
+          El backend concentra la lógica principal del sistema. Recibe solicitudes desde
+          el frontend, procesa audios, se comunica con OpenAI, crea planes pendientes de
+          confirmación, registra información en Supabase, administra dispositivos y expone
+          los endpoints que el ESP32 consulta para recibir comandos.
+        </p>
+
+        <p>Antes de desplegar cambios reales de backend, se debe verificar la sintaxis:</p>
+
+        <pre><code>cd /home/abraham/proy_ia_security/backend
+python3 -c "import ast, pathlib; ast.parse(pathlib.Path('app_api.py').read_text()); print('app_api.py syntax OK')"</code></pre>
+
+        <p>Variables de entorno importantes del backend:</p>
+
+        <pre><code>PUBLIC_API_URL=https://api.afcrseguridad.com
+AI_PROVIDER=openai
+OPENAI_MODEL=gpt-4o
+OPENAI_TRANSCRIBE_MODEL=gpt-4o-mini-transcribe
+OPENAI_TRANSCRIBE_FALLBACK_MODEL=whisper-1
+VOICE_PLAN_TTL_SECONDS=300
+VOICE_AUDIO_MIN_BYTES=1500
+DEVICE_COMMAND_TTL_SECONDS=300</code></pre>
+
+        <div class="warning">
+          Las variables de conexión a Supabase y credenciales de OpenAI no deben escribirse
+          dentro del código fuente ni en documentos públicos. Deben mantenerse en archivos
+          de entorno seguros o en la configuración protegida del servidor.
+        </div>
+
+        <p>La verificación principal del backend desplegado se realiza con:</p>
+
+        <pre><code>curl https://api.afcrseguridad.com/ping</code></pre>
+      </section>
+
+      <section id="supabase">
+        <span class="section-label">Sección 5</span>
+
+        <h2>5. Despliegue de Supabase</h2>
+
+        <p>
+          Supabase es la plataforma principal de persistencia del proyecto en producción
+          temprana. El proyecto autorizado para esta aplicación corresponde a la referencia:
+        </p>
+
+        <pre><code>omkbowrspgbuwpifksfk</code></pre>
+
+        <p>
+          Supabase proporciona base de datos PostgreSQL, autenticación, políticas de
+          seguridad a nivel de fila, almacenamiento privado y capacidades que permiten
+          organizar la información de la plataforma de forma segura.
+        </p>
+
+        <p>En el despliegue actual, Supabase almacena:</p>
+
+        <ul>
+          <li>Empresas y usuarios.</li>
+          <li>Dispositivos registrados o enlazados.</li>
+          <li>Tokens temporales de emparejamiento.</li>
+          <li>Planes generados por voz.</li>
+          <li>Comandos enviados a dispositivos.</li>
+          <li>Estados de ejecución.</li>
+          <li>Auditoría de voz.</li>
+          <li>Audios en almacenamiento privado.</li>
+        </ul>
+
+        <p>El almacenamiento privado de audio se realiza en el bucket:</p>
+
+        <pre><code>voice-audio</code></pre>
+
+        <div class="note">
+          Este almacenamiento permite conservar evidencia del flujo de voz, aunque debe
+          gestionarse con cuidado porque los audios pueden contener información sensible.
+        </div>
+      </section>
+
+      <section id="ia">
+        <span class="section-label">Sección 6</span>
+
+        <h2>6. Despliegue de los servicios de inteligencia artificial</h2>
+
+        <p>
+          El backend consume servicios de OpenAI para realizar dos tareas principales:
+          transcripción de audio e interpretación de intención.
+        </p>
+
+        <p>
+          La transcripción convierte el audio grabado por el usuario en texto. Luego, la
+          interpretación transforma ese texto en una respuesta natural y en un JSON técnico
+          orientado a automatización.
+        </p>
+
+        <p>El modelo principal de transcripción configurado es:</p>
+
+        <pre><code>gpt-4o-mini-transcribe</code></pre>
+
+        <p>El modelo de respaldo remoto configurado es:</p>
+
+        <pre><code>whisper-1</code></pre>
+
+        <p>
+          La integración con OpenAI ya fue validada en producción temprana mediante un
+          audio de prueba con la frase <code>prende el LED</code>.
+        </p>
+
+        <ul>
+          <li>
+            <strong>Respuesta IA para el usuario:</strong> texto natural, claro y comprensible.
+          </li>
+          <li>
+            <strong>Respuesta JSON para el dispositivo:</strong> estructura técnica usada
+            por el backend.
+          </li>
+        </ul>
+      </section>
+
+      <section id="esp32">
+        <span class="section-label">Sección 7</span>
+
+        <h2>7. Despliegue para ESP32</h2>
+
+        <p>
+          El ESP32 es el primer dispositivo IoT físico integrado en el despliegue de
+          producción temprana. Su función actual es validar la ejecución de comandos
+          físicos mediante el control de un LED, utilizando el flujo completo de
+          emparejamiento, polling y confirmación.
+        </p>
+
+        <p>En producción, el ESP32 debe comunicarse con:</p>
+
+        <pre><code>https://api.afcrseguridad.com</code></pre>
+
+        <p>
+          La comunicación se realiza mediante polling HTTP(S). Esto significa que el
+          dispositivo no espera una conexión entrante desde el backend, sino que consulta
+          periódicamente la API para saber si tiene comandos pendientes.
+        </p>
+
+        <p>El endpoint de consulta es:</p>
+
+        <pre><code>GET /device/commands?device_id={device_id}
+Authorization: Bearer &lt;device_api_key&gt;</code></pre>
+
+        <p>Cuando el ESP32 recibe un comando, ejecuta la acción física y envía un ACK:</p>
+
+        <pre><code>POST /device/commands/{command_id}/ack</code></pre>
+
+        <div class="warning">
+          Durante pruebas locales de laboratorio, el ESP32 no debe usar <code>localhost</code>.
+          Debe usar una URL LAN accesible desde la red WiFi donde se encuentra el dispositivo.
+        </div>
+
+        <p>Ejemplo de URL local correcta:</p>
+
+        <pre><code>http://192.168.0.5:8000</code></pre>
+
+        <p>Antes de cargar el firmware, se recomienda validar desde un celular:</p>
+
+        <pre><code>http://192.168.0.5:8000/ping</code></pre>
+      </section>
+
+      <section id="validacion">
+        <span class="section-label">Sección 8</span>
+
+        <h2>8. Validación post-despliegue</h2>
+
+        <p>
+          Después de desplegar o actualizar componentes, se deben realizar pruebas por
+          capas para identificar rápidamente dónde podría encontrarse un problema.
+        </p>
+
+        <div class="note">
+          La validación debe realizarse por capas: frontend, backend, flujo de voz y ESP32.
+        </div>
+      </section>
+
+      <section id="validacion-frontend">
+        <span class="section-label">Sección 8.1</span>
+
+        <h3>8.1 Validación del frontend</h3>
+
+        <p>Para verificar que el sitio público responde:</p>
+
+        <pre><code>curl -I https://afcrseguridad.com</code></pre>
+
+        <p>También deben revisarse los logs del hosting para confirmar:</p>
+
+        <pre><code>AFCR_FRONTEND_BUILD=f.37
+AFCR_FRONTEND_MODE=next-server</code></pre>
+
+        <p>
+          Estas marcas indican que la versión correcta fue construida y que el modo de
+          ejecución corresponde al esperado.
+        </p>
+      </section>
+
+      <section id="validacion-backend">
+        <span class="section-label">Sección 8.2</span>
+
+        <h3>8.2 Validación del backend</h3>
+
+        <p>Para verificar la disponibilidad de la API pública:</p>
+
+        <pre><code>curl https://api.afcrseguridad.com/ping</code></pre>
+
+        <p>
+          Si el endpoint responde correctamente, el backend está activo. Si no responde,
+          se debe revisar el servicio en AWS, el dominio, el certificado HTTPS, el puerto
+          de escucha o las variables de entorno.
+        </p>
+      </section>
+
+      <section id="validacion-voz">
+        <span class="section-label">Sección 8.3</span>
+
+        <h3>8.3 Validación del flujo de voz</h3>
+
+        <p>La validación funcional del flujo de voz requiere:</p>
+
+        <ol>
+          <li>Ingresar al dashboard web.</li>
+          <li>Permitir el uso del micrófono.</li>
+          <li>Grabar un comando corto, por ejemplo <code>prende el LED</code>.</li>
+          <li>Verificar que el frontend envíe el audio al backend.</li>
+          <li>Confirmar que la IA devuelva una respuesta natural.</li>
+          <li>Confirmar que el sistema muestre un JSON técnico separado.</li>
+          <li>Revisar si el plan es ejecutable.</li>
+          <li>Confirmar la ejecución desde la interfaz.</li>
+        </ol>
+      </section>
+
+      <section id="validacion-esp32">
+        <span class="section-label">Sección 8.4</span>
+
+        <h3>8.4 Validación con ESP32</h3>
+
+        <p>La validación física requiere:</p>
+
+        <ol>
+          <li>Generar un token temporal de emparejamiento.</li>
+          <li>Insertar el token en el sketch del ESP32.</li>
+          <li>Configurar SSID, password WiFi y URL de API.</li>
+          <li>Cargar el sketch por USB desde Arduino IDE.</li>
+          <li>Confirmar que el ESP32 reclame el dispositivo.</li>
+          <li>Enviar un comando de voz ejecutable.</li>
+          <li>Confirmar el plan desde el dashboard.</li>
+          <li>Verificar que el ESP32 reciba el comando.</li>
+          <li>Observar la acción física en el LED.</li>
+          <li>Confirmar que el backend reciba el ACK.</li>
+          <li>Revisar el estado final desde el dashboard.</li>
+        </ol>
+
+        <div class="success">
+          Esta prueba valida el ciclo completo desde la voz del usuario hasta la acción
+          física del dispositivo.
+        </div>
+      </section>
+
+      <section id="riesgos">
+        <span class="section-label">Sección 9</span>
+
+        <h2>9. Riesgos y controles del despliegue</h2>
+
+        <p>
+          El despliegue del proyecto incorpora riesgos propios de una solución distribuida
+          que conecta navegador, API, base de datos, servicios de IA y hardware físico.
+          Por ello, se aplican controles técnicos y operativos.
+        </p>
+
+        <h3>9.1 Contenido mixto</h3>
+
+        <p>
+          El frontend público se sirve por HTTPS. Por esta razón, la API pública también
+          debe utilizar HTTPS.
+        </p>
+
+        <pre><code>NEXT_PUBLIC_API_BASE_URL=https://api.afcrseguridad.com</code></pre>
+
+        <h3>9.2 Variables de entorno incorrectas</h3>
+
+        <p>
+          Una variable mal configurada puede hacer que el frontend apunte a una API local,
+          privada o inexistente.
+        </p>
+
+        <div class="note">
+          Control aplicado: mantener variables separadas por entorno y validar el dominio
+          público antes de publicar cambios.
+        </div>
+
+        <h3>9.3 Secretos y credenciales</h3>
+
+        <p>
+          Las claves de OpenAI, Supabase y otros servicios no deben almacenarse en código
+          fuente ni exponerse en el frontend.
+        </p>
+
+        <div class="warning">
+          Control aplicado: mantener secretos en archivos de entorno o configuraciones
+          seguras del servidor.
+        </div>
+
+        <h3>9.4 Conectividad del ESP32</h3>
+
+        <p>
+          El ESP32 puede fallar si la URL configurada no es accesible desde su red. Esto
+          ocurre especialmente en laboratorio local si se usa <code>localhost</code>.
+        </p>
+
+        <p>
+          Control aplicado: en producción usar <code>https://api.afcrseguridad.com</code>;
+          en local usar una IP LAN real y verificar <code>/ping</code> desde otro
+          dispositivo de la red.
+        </p>
+
+        <h3>9.5 Ejecución no deseada de comandos</h3>
+
+        <p>
+          Una mala transcripción podría interpretar incorrectamente una orden.
+        </p>
+
+        <div class="success">
+          Control aplicado: el sistema usa vista previa y confirmación. La IA no ejecuta
+          directamente acciones físicas.
+        </div>
+
+        <h3>9.6 Comandos pendientes o expirados</h3>
+
+        <p>
+          Un dispositivo podría estar desconectado y no recibir el comando dentro del
+          tiempo esperado.
+        </p>
+
+        <p>
+          Control aplicado: los comandos tienen un tiempo de vida limitado y pueden pasar
+          a estado <code>expired</code>.
+        </p>
+      </section>
+
+      <section id="historial">
+        <span class="section-label">Sección 10</span>
+
+        <h2>10. Historial de despliegue</h2>
+
+        <p>El historial de despliegue conocido en la etapa actual es el siguiente:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Componente</th>
+              <th>Versión o estado</th>
+              <th>Descripción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Frontend</td>
+              <td><code>f.37</code></td>
+              <td>Versión operativa conocida en Hostinger, ejecutada como Next server.</td>
+            </tr>
+            <tr>
+              <td>Backend</td>
+              <td><code>b.17</code></td>
+              <td>Versión operativa conocida en AWS con flujo HTTP(S) polling para ESP32.</td>
+            </tr>
+            <tr>
+              <td>Dominio frontend</td>
+              <td><code>https://afcrseguridad.com</code></td>
+              <td>Sitio público utilizado por el usuario.</td>
+            </tr>
+            <tr>
+              <td>Dominio backend</td>
+              <td><code>https://api.afcrseguridad.com</code></td>
+              <td>API pública consumida por el frontend y dispositivos.</td>
+            </tr>
+            <tr>
+              <td>IP backend</td>
+              <td><code>3.132.192.3</code></td>
+              <td>IP pública conocida asociada al backend AWS.</td>
+            </tr>
+            <tr>
+              <td>Supabase</td>
+              <td><code>omkbowrspgbuwpifksfk</code></td>
+              <td>Proyecto de base de datos, autenticación, RLS y Storage privado.</td>
+            </tr>
+            <tr>
+              <td>OpenAI</td>
+              <td>Funcional</td>
+              <td>Transcripción e interpretación validadas con audio de prueba.</td>
+            </tr>
+            <tr>
+              <td>ESP32</td>
+              <td>Producción temprana</td>
+              <td>Primer dispositivo físico integrado mediante polling HTTP(S).</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>
+          Este historial permite diferenciar los componentes ya operativos de las
+          extensiones futuras. El sistema ya cuenta con una base funcional para operar
+          con ESP32, mientras que cámaras, puertas, luces reales y drones corresponden a
+          la expansión prevista de la solución.
+        </p>
+      </section>
+
+      <section id="conclusion">
+        <span class="section-label">Sección 11</span>
+
+        <h2>11. Conclusión del despliegue</h2>
+
+        <p>
+          El despliegue del proyecto demuestra que la solución puede operar como una
+          plataforma distribuida en producción temprana. La aplicación web, el backend,
+          la base de datos, la inteligencia artificial y el ESP32 trabajan de forma
+          coordinada para transformar un comando de voz en una acción física controlada.
+        </p>
+
+        <p>
+          La separación entre frontend, backend, Supabase, OpenAI y dispositivos IoT
+          permite que el sistema sea escalable y mantenible. Además, el uso de HTTPS,
+          variables de entorno, confirmación previa a la ejecución, almacenamiento seguro
+          y seguimiento de estados permite reducir riesgos durante la operación.
+        </p>
+
+        <div class="success">
+          Esta infraestructura constituye una base sólida para continuar la evolución del
+          proyecto hacia dispositivos más complejos, manteniendo el principio central de
+          la tesis: la inteligencia artificial como cerebro, orquestador y controlador de
+          un ecosistema IoT.
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    const menuLinks = document.querySelectorAll(".menu-link");
+    const sections = document.querySelectorAll(".manual-container section");
+
+    menuLinks.forEach(link => {
+      link.addEventListener("click", function () {
+        const sectionId = this.getAttribute("data-section");
+
+        sections.forEach(section => {
+          section.classList.remove("active-section");
+        });
+
+        menuLinks.forEach(menuLink => {
+          menuLink.classList.remove("active");
+        });
+
+        document.getElementById(sectionId).classList.add("active-section");
+        this.classList.add("active");
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
+```

@@ -1,0 +1,429 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual de instalación</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 270px;
+      height: 100vh;
+      background-color: #1f2937;
+      color: #fff;
+      padding: 25px 20px;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #4b5563;
+      padding-bottom: 10px;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #d1d5db;
+      text-decoration: none;
+      padding: 10px 8px;
+      font-size: 15px;
+      border-radius: 6px;
+      margin-bottom: 4px;
+      cursor: pointer;
+    }
+
+    .sidebar a:hover {
+      color: #ffffff;
+      background-color: #374151;
+      transition: 0.2s;
+    }
+
+    .sidebar a.active {
+      color: #ffffff;
+      background-color: #2563eb;
+      font-weight: bold;
+    }
+
+    .content {
+      margin-left: 270px;
+      padding: 40px;
+      max-width: 1000px;
+    }
+
+    .manual-container {
+      background-color: #ffffff;
+      padding: 35px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      min-height: 500px;
+    }
+
+    .manual-container section {
+      display: none;
+    }
+
+    .manual-container section.active-section {
+      display: block;
+      animation: fadeIn 0.25s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #111827;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: #1f2937;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 15px;
+    }
+
+    ul {
+      margin-left: 25px;
+      margin-bottom: 20px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    code {
+      background-color: #e5e7eb;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+      font-size: 14px;
+    }
+
+    pre {
+      background-color: #111827;
+      color: #f9fafb;
+      padding: 18px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+    }
+
+    .note {
+      background-color: #eff6ff;
+      border-left: 5px solid #2563eb;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+
+    .section-label {
+      display: inline-block;
+      background-color: #e0ecff;
+      color: #1d4ed8;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+
+      .content {
+        margin-left: 0;
+        padding: 20px;
+      }
+
+      .manual-container {
+        padding: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <aside class="sidebar">
+    <h2>Manual de instalación</h2>
+
+    <a class="menu-link active" data-section="manual">1. Manual de instalación</a>
+    <a class="menu-link" data-section="requisitos">1.1 Requisitos previos</a>
+    <a class="menu-link" data-section="estructura">1.2 Estructura del proyecto</a>
+    <a class="menu-link" data-section="frontend">1.3 Instalación del frontend</a>
+    <a class="menu-link" data-section="env-frontend">1.4 Variables del frontend</a>
+    <a class="menu-link" data-section="backend">1.5 Instalación del backend</a>
+    <a class="menu-link" data-section="env-backend">1.6 Variables del backend</a>
+    <a class="menu-link" data-section="verificacion">1.7 Verificación</a>
+    <a class="menu-link" data-section="esp32">1.8 Pruebas con ESP32 local</a>
+  </aside>
+
+  <main class="content">
+    <div class="manual-container">
+
+      <section id="manual" class="active-section">
+        <span class="section-label">Sección 1</span>
+
+        <h1>1. Manual de instalación</h1>
+
+        <p>
+          Este manual describe los pasos generales para preparar el sistema en un entorno
+          local de desarrollo o validación.
+        </p>
+
+        <div class="note">
+          Usa el menú lateral para cambiar entre secciones. Cada opción se mostrará como
+          una vista independiente dentro del mismo documento.
+        </div>
+      </section>
+
+      <section id="requisitos">
+        <span class="section-label">Sección 1.1</span>
+
+        <h2>1.1 Requisitos previos</h2>
+
+        <p>Antes de instalar el sistema se requiere:</p>
+
+        <ul>
+          <li>Sistema operativo compatible con Node.js y Python.</li>
+          <li>Node.js 20.x.</li>
+          <li>Python 3.</li>
+          <li>Acceso al repositorio del proyecto.</li>
+          <li>Variables de entorno del frontend y backend.</li>
+          <li>Cuenta y proyecto Supabase configurado para producción temprana.</li>
+          <li>Clave de OpenAI configurada para transcripción e interpretación.</li>
+          <li>Arduino IDE para cargar el firmware al ESP32.</li>
+          <li>ESP32 conectado por USB para pruebas de hardware.</li>
+        </ul>
+      </section>
+
+      <section id="estructura">
+        <span class="section-label">Sección 1.2</span>
+
+        <h2>1.2 Estructura del proyecto</h2>
+
+        <p>El proyecto se organiza en repositorios y carpetas principales:</p>
+
+        <pre><code>/home/abraham/proy_ia_security
+|-- frontend/
+|-- backend/
+|-- firmware/
+|-- audios_recibidos/
+|-- README.md</code></pre>
+
+        <p>
+          La carpeta <code>frontend/</code> contiene la aplicación web.
+          La carpeta <code>backend/</code> contiene la API FastAPI.
+          La carpeta <code>firmware/</code> contiene el código base para el ESP32.
+        </p>
+      </section>
+
+      <section id="frontend">
+        <span class="section-label">Sección 1.3</span>
+
+        <h2>1.3 Instalación del frontend</h2>
+
+        <p>Para instalar dependencias del frontend:</p>
+
+        <pre><code>cd /home/abraham/proy_ia_security/frontend
+npm install</code></pre>
+
+        <p>Para compilar:</p>
+
+        <pre><code>npm run build</code></pre>
+
+        <p>Para ejecutar en modo producción local:</p>
+
+        <pre><code>PORT=3101 npm run start</code></pre>
+
+        <div class="note">
+          Para desarrollo local, se puede ejecutar el servidor de desarrollo de Next.js
+          en el puerto definido por el entorno. Durante pruebas, se debe evitar correr dos
+          procesos <code>next dev</code> sobre la misma carpeta y evitar ejecutar
+          <code>npm run build</code> mientras un servidor de desarrollo usa la misma carpeta
+          <code>.next</code>.
+        </div>
+      </section>
+
+      <section id="env-frontend">
+        <span class="section-label">Sección 1.4</span>
+
+        <h2>1.4 Variables de entorno del frontend</h2>
+
+        <p>En producción, la aplicación debe comunicarse con la API pública:</p>
+
+        <pre><code>NEXT_PUBLIC_API_BASE_URL=https://api.afcrseguridad.com</code></pre>
+
+        <p>
+          Esta configuración evita problemas de contenido mixto, ya que el frontend
+          público funciona mediante HTTPS y la API pública también debe responder por HTTPS.
+        </p>
+      </section>
+
+      <section id="backend">
+        <span class="section-label">Sección 1.5</span>
+
+        <h2>1.5 Instalación del backend</h2>
+
+        <p>Para preparar el backend:</p>
+
+        <pre><code>cd /home/abraham/proy_ia_security/backend</code></pre>
+
+        <p>
+          Se deben instalar las dependencias Python correspondientes al proyecto. Luego,
+          es recomendable verificar la sintaxis del archivo principal:
+        </p>
+
+        <pre><code>python3 -c "import ast, pathlib; ast.parse(pathlib.Path('app_api.py').read_text()); print('app_api.py syntax OK')"</code></pre>
+
+        <p>Para ejecutar el backend localmente:</p>
+
+        <pre><code>uvicorn app_api:app --host 0.0.0.0 --port 8000</code></pre>
+      </section>
+
+      <section id="env-backend">
+        <span class="section-label">Sección 1.6</span>
+
+        <h2>1.6 Variables de entorno del backend</h2>
+
+        <p>
+          El backend requiere variables para configurar servicios externos y parámetros
+          operativos. Entre las más importantes se encuentran:
+        </p>
+
+        <pre><code>PUBLIC_API_URL=https://api.afcrseguridad.com
+AI_PROVIDER=openai
+OPENAI_MODEL=gpt-4o
+OPENAI_TRANSCRIBE_MODEL=gpt-4o-mini-transcribe
+OPENAI_TRANSCRIBE_FALLBACK_MODEL=whisper-1
+VOICE_PLAN_TTL_SECONDS=300
+VOICE_AUDIO_MIN_BYTES=1500
+DEVICE_COMMAND_TTL_SECONDS=300</code></pre>
+
+        <p>
+          Cuando se usa Supabase, también deben configurarse las variables asociadas a la
+          URL del proyecto y las claves necesarias para que el backend pueda acceder a la
+          base de datos y al almacenamiento privado.
+        </p>
+      </section>
+
+      <section id="verificacion">
+        <span class="section-label">Sección 1.7</span>
+
+        <h2>1.7 Verificación de funcionamiento</h2>
+
+        <p>Una vez iniciado el backend, se debe verificar:</p>
+
+        <pre><code>curl http://localhost:8000/ping</code></pre>
+
+        <p>En producción:</p>
+
+        <pre><code>curl https://api.afcrseguridad.com/ping</code></pre>
+
+        <p>
+          Si la respuesta indica que el backend está activo, el frontend puede comunicarse
+          con la API.
+        </p>
+      </section>
+
+      <section id="esp32">
+        <span class="section-label">Sección 1.8</span>
+
+        <h2>1.8 Consideración para pruebas con ESP32 local</h2>
+
+        <p>
+          Para pruebas físicas locales, el ESP32 no debe usar <code>localhost</code>.
+          Debe usar una dirección LAN accesible desde el dispositivo, por ejemplo:
+        </p>
+
+        <pre><code>http://192.168.0.5:8000</code></pre>
+
+        <p>
+          Antes de cargar el sketch, se debe comprobar desde un celular u otro equipo en
+          la misma red que:
+        </p>
+
+        <pre><code>http://192.168.0.5:8000/ping</code></pre>
+
+        <p>
+          Responde correctamente.
+        </p>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    const menuLinks = document.querySelectorAll(".menu-link");
+    const sections = document.querySelectorAll(".manual-container section");
+
+    menuLinks.forEach(link => {
+      link.addEventListener("click", function () {
+        const sectionId = this.getAttribute("data-section");
+
+        sections.forEach(section => {
+          section.classList.remove("active-section");
+        });
+
+        menuLinks.forEach(menuLink => {
+          menuLink.classList.remove("active");
+        });
+
+        document.getElementById(sectionId).classList.add("active-section");
+        this.classList.add("active");
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
+```

@@ -1,0 +1,326 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual del usuario</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 280px;
+      height: 100vh;
+      background-color: #1f2937;
+      color: #ffffff;
+      padding: 25px 20px;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #4b5563;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #d1d5db;
+      text-decoration: none;
+      padding: 8px 0;
+      font-size: 15px;
+    }
+
+    .sidebar a:hover {
+      color: #ffffff;
+      padding-left: 6px;
+      transition: 0.2s;
+    }
+
+    .content {
+      margin-left: 280px;
+      padding: 40px;
+      max-width: 1050px;
+    }
+
+    .manual-container {
+      background-color: #ffffff;
+      padding: 35px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #111827;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-top: 35px;
+      margin-bottom: 15px;
+      color: #1f2937;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 15px;
+    }
+
+    ul {
+      margin-left: 25px;
+      margin-bottom: 20px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    code {
+      background-color: #e5e7eb;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+      font-size: 14px;
+    }
+
+    pre {
+      background-color: #111827;
+      color: #f9fafb;
+      padding: 18px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+    }
+
+    .note {
+      background-color: #eff6ff;
+      border-left: 5px solid #2563eb;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+
+    .warning {
+      background-color: #fff7ed;
+      border-left: 5px solid #f97316;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+
+    .status-list {
+      background-color: #f9fafb;
+      border: 1px solid #e5e7eb;
+      padding: 18px 18px 18px 35px;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+
+      .content {
+        margin-left: 0;
+        padding: 20px;
+      }
+
+      .manual-container {
+        padding: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <aside class="sidebar">
+    <h2>Manual del usuario</h2>
+    <a href="#manual">1. Manual del usuario</a>
+    <a href="#acceso">1.1 Acceso a la aplicación</a>
+    <a href="#backend">1.2 Verificación del backend</a>
+    <a href="#grabacion">1.3 Grabación de comando de voz</a>
+    <a href="#respuesta">1.4 Revisión de la respuesta</a>
+    <a href="#confirmacion">1.5 Confirmación de ejecución</a>
+    <a href="#seguimiento">1.6 Seguimiento del comando</a>
+    <a href="#logs">1.7 Interpretación de logs de prueba</a>
+  </aside>
+
+  <main class="content">
+    <div class="manual-container">
+
+      <section id="manual">
+        <h1>1. Manual del usuario</h1>
+
+        <p>
+          Este manual describe el uso básico de la aplicación desde la perspectiva de una
+          persona que desea controlar dispositivos mediante comandos de voz.
+        </p>
+      </section>
+
+      <section id="acceso">
+        <h2>1.1 Acceso a la aplicación</h2>
+
+        <p>
+          El usuario ingresa a la aplicación web desde el navegador. En producción, la
+          URL pública del frontend es:
+        </p>
+
+        <pre><code>https://afcrseguridad.com</code></pre>
+
+        <p>
+          Desde la pantalla inicial, el usuario puede acceder al entorno de desarrollo,
+          al dashboard de voz o al laboratorio de sincronización, según las opciones
+          habilitadas.
+        </p>
+      </section>
+
+      <section id="backend">
+        <h2>1.2 Verificación del backend</h2>
+
+        <p>
+          Antes de grabar comandos, el dashboard verifica la disponibilidad del backend
+          mediante el endpoint <code>/ping</code>. Si el backend responde correctamente,
+          el sistema puede continuar con la captura de audio.
+        </p>
+
+        <div class="warning">
+          Si el backend no responde, el usuario debe revisar la conexión a Internet, la
+          configuración de la URL de API o el estado del servicio backend.
+        </div>
+      </section>
+
+      <section id="grabacion">
+        <h2>1.3 Grabación de comando de voz</h2>
+
+        <p>
+          Para enviar una instrucción, el usuario debe permitir el uso del micrófono en
+          el navegador. Luego puede iniciar la grabación y pronunciar un comando, por
+          ejemplo:
+        </p>
+
+        <pre><code>prende el LED</code></pre>
+
+        <p>
+          El sistema valida que el audio no esté vacío y que no sea demasiado pequeño. Si
+          el audio parece silencio, el frontend bloquea el envío para evitar
+          interpretaciones incorrectas.
+        </p>
+      </section>
+
+      <section id="respuesta">
+        <h2>1.4 Revisión de la respuesta</h2>
+
+        <p>
+          Luego de enviar el audio, el dashboard muestra la respuesta generada por la IA.
+          El usuario debe revisar dos secciones:
+        </p>
+
+        <ul>
+          <li>
+            <strong>Respuesta IA para el usuario:</strong> explica en lenguaje natural lo
+            que el sistema entendió.
+          </li>
+          <li>
+            <strong>Respuesta JSON para el dispositivo:</strong> muestra la estructura
+            técnica que será utilizada para automatización.
+          </li>
+        </ul>
+
+        <div class="note">
+          Esta revisión permite comprobar si la IA interpretó correctamente la orden antes
+          de ejecutar una acción física.
+        </div>
+      </section>
+
+      <section id="confirmacion">
+        <h2>1.5 Confirmación de ejecución</h2>
+
+        <p>
+          Si el sistema determina que el plan puede ejecutarse, el dashboard habilita la
+          opción de confirmar ejecución. El usuario debe presionar esta opción solo si la
+          acción mostrada coincide con lo que desea realizar.
+        </p>
+
+        <p>
+          Al confirmar, el backend coloca el comando en cola para el dispositivo IoT. En
+          el caso del ESP32, el dispositivo recibirá la orden cuando consulte la API.
+        </p>
+      </section>
+
+      <section id="seguimiento">
+        <h2>1.6 Seguimiento del comando</h2>
+
+        <p>
+          Después de confirmar la ejecución, el usuario puede observar el estado del
+          comando. Los estados posibles son:
+        </p>
+
+        <ul class="status-list">
+          <li>En cola.</li>
+          <li>Entregado.</li>
+          <li>Ejecutado.</li>
+          <li>Fallido.</li>
+          <li>Expirado.</li>
+        </ul>
+
+        <p>
+          Si el comando aparece como ejecutado, significa que el dispositivo informó al
+          backend que completó la acción. Si aparece como expirado, significa que el
+          dispositivo no ejecutó el comando dentro del tiempo esperado.
+        </p>
+      </section>
+
+      <section id="logs">
+        <h2>1.7 Interpretación de logs de prueba</h2>
+
+        <p>
+          El dashboard incluye una sección de logs de prueba. Esta sección ayuda a revisar
+          eventos como permisos de micrófono, tipo MIME de audio, tamaño del archivo,
+          niveles de volumen, respuesta del backend y estado de transcripción.
+        </p>
+
+        <p>
+          Estos logs son útiles durante producción temprana porque permiten diagnosticar
+          problemas de micrófono, conexión o interpretación.
+        </p>
+      </section>
+
+    </div>
+  </main>
+
+</body>
+</html>
+```

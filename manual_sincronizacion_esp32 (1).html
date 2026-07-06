@@ -1,0 +1,310 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manual de sincronización ESP32</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      color: #222;
+      line-height: 1.6;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 290px;
+      height: 100vh;
+      background-color: #1f2937;
+      color: #ffffff;
+      padding: 25px 20px;
+      overflow-y: auto;
+    }
+
+    .sidebar h2 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #4b5563;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #d1d5db;
+      text-decoration: none;
+      padding: 8px 0;
+      font-size: 15px;
+    }
+
+    .sidebar a:hover {
+      color: #ffffff;
+      padding-left: 6px;
+      transition: 0.2s;
+    }
+
+    .content {
+      margin-left: 290px;
+      padding: 40px;
+      max-width: 1000px;
+    }
+
+    .manual-container {
+      background-color: #ffffff;
+      padding: 35px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #111827;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-top: 35px;
+      margin-bottom: 15px;
+      color: #1f2937;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 15px;
+    }
+
+    code {
+      background-color: #e5e7eb;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: Consolas, monospace;
+      font-size: 14px;
+    }
+
+    pre {
+      background-color: #111827;
+      color: #f9fafb;
+      padding: 18px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    pre code {
+      background: none;
+      color: inherit;
+      padding: 0;
+    }
+
+    .note {
+      background-color: #eff6ff;
+      border-left: 5px solid #2563eb;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+
+    .warning {
+      background-color: #fff7ed;
+      border-left: 5px solid #f97316;
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 6px;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+
+      .content {
+        margin-left: 0;
+        padding: 20px;
+      }
+
+      .manual-container {
+        padding: 25px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <aside class="sidebar">
+    <h2>Manual ESP32</h2>
+    <a href="#manual">1. Manual de sincronización ESP32</a>
+    <a href="#token">1.1 Generación de token</a>
+    <a href="#sketch">1.2 Preparación del sketch</a>
+    <a href="#firmware">1.3 Carga del firmware</a>
+    <a href="#reclamo">1.4 Reclamo del dispositivo</a>
+    <a href="#comandos">1.5 Consulta de comandos</a>
+    <a href="#ack">1.6 Confirmación ACK</a>
+    <a href="#prueba">1.7 Prueba recomendada</a>
+  </aside>
+
+  <main class="content">
+    <div class="manual-container">
+
+      <section id="manual">
+        <h1>1. Manual de sincronización ESP32</h1>
+
+        <p>
+          Este manual describe el proceso para enlazar un ESP32 con la plataforma.
+        </p>
+      </section>
+
+      <section id="token">
+        <h2>1.1 Generación de token</h2>
+
+        <p>
+          El usuario ingresa al laboratorio de sincronización y solicita la creación de
+          un token de emparejamiento. El frontend envía esta solicitud al backend mediante
+          el endpoint:
+        </p>
+
+        <pre><code>POST /devices/pairing-token</code></pre>
+
+        <p>
+          El backend genera un token temporal y devuelve la información necesaria para
+          configurar el dispositivo.
+        </p>
+      </section>
+
+      <section id="sketch">
+        <h2>1.2 Preparación del sketch</h2>
+
+        <p>
+          El frontend muestra un sketch base para Arduino IDE. El usuario debe copiarlo y
+          editar los siguientes valores:
+        </p>
+
+        <pre><code>const char* WIFI_SSID = "NOMBRE_DE_LA_RED";
+const char* WIFI_PASSWORD = "CONTRASENA_DE_LA_RED";
+const char* PAIRING_TOKEN = "TOKEN_GENERADO";</code></pre>
+
+        <p>
+          También debe verificarse que la URL de la API sea correcta. En producción debe
+          ser:
+        </p>
+
+        <pre><code>https://api.afcrseguridad.com</code></pre>
+
+        <p>
+          En laboratorio local debe ser una URL LAN accesible desde el ESP32:
+        </p>
+
+        <pre><code>http://192.168.0.5:8000</code></pre>
+
+        <div class="warning">
+          No se debe usar <code>localhost</code> en el ESP32 para conectarse al backend
+          local, porque para el ESP32 <code>localhost</code> significa el propio ESP32.
+        </div>
+      </section>
+
+      <section id="firmware">
+        <h2>1.3 Carga del firmware</h2>
+
+        <p>
+          El usuario conecta el ESP32 por USB, abre Arduino IDE, selecciona la placa y el
+          puerto correspondiente, y carga el sketch.
+        </p>
+
+        <p>
+          Al iniciar, el ESP32 se conecta al WiFi y solicita reclamar el token.
+        </p>
+      </section>
+
+      <section id="reclamo">
+        <h2>1.4 Reclamo del dispositivo</h2>
+
+        <p>
+          El ESP32 llama al endpoint:
+        </p>
+
+        <pre><code>POST /devices/claim</code></pre>
+
+        <p>
+          Si el token es válido, el backend registra el dispositivo como enlazado y
+          entrega una clave de API una sola vez. El ESP32 guarda esta credencial
+          localmente para consultar comandos futuros.
+        </p>
+      </section>
+
+      <section id="comandos">
+        <h2>1.5 Consulta de comandos</h2>
+
+        <p>
+          Luego de enlazarse, el ESP32 consulta periódicamente:
+        </p>
+
+        <pre><code>GET /device/commands?device_id={device_id}
+Authorization: Bearer &lt;device_api_key&gt;</code></pre>
+
+        <p>
+          Si existe un comando pendiente, el dispositivo lo recibe y ejecuta la acción
+          correspondiente, como encender o apagar el LED.
+        </p>
+      </section>
+
+      <section id="ack">
+        <h2>1.6 Confirmación ACK</h2>
+
+        <p>
+          Después de ejecutar la acción, el ESP32 informa el resultado al backend:
+        </p>
+
+        <pre><code>POST /device/commands/{command_id}/ack</code></pre>
+
+        <p>
+          Este ACK permite que el dashboard actualice el estado del comando y muestre al
+          usuario si la acción fue ejecutada correctamente.
+        </p>
+      </section>
+
+      <section id="prueba">
+        <h2>1.7 Prueba recomendada</h2>
+
+        <p>
+          Antes de cargar el firmware en el ESP32, se recomienda validar desde un celular
+          en la misma red:
+        </p>
+
+        <pre><code>http://192.168.0.5:8000/ping</code></pre>
+
+        <p>
+          Si esta prueba falla, el ESP32 probablemente tampoco podrá conectarse al backend
+          local.
+        </p>
+
+        <div class="note">
+          En ese caso, se debe revisar la IP LAN, las reglas de firewall, el portproxy o
+          la configuración del servidor FastAPI.
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+</body>
+</html>
+```
